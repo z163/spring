@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- 读取java配置文件 -->
+	<!-- 作用1：加载properties文件，存储到Properties对象 -->
+	<!-- 作用2：去将spring中的有占位符的bean，进行替换 -->
+	<context:property-placeholder location="classpath:db.properties"/>
+
+	<!-- Spring IoC基于XML配置，主要是通过bean标签进行Bean的管理的 -->
+	<!-- 配置数据源连接池(dbcp) -->
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<!-- 注意事项：property标签name属性，和set方法名对应，不是和属性对应 -->
+		<!-- ${}：这是spring中的占位符property-placehodler -->
+		<property name="driverClassName" value="${db.driver}" />
+		<property name="url" value="${db.url}" />
+		<property name="username" value="${db.username}" />
+		<property name="password" value="${db.password}" />
+	</bean>
+	<!-- spring提供的JDBC模板 -->
+	<bean id="jdbcTemplate"
+		class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
+	<bean id="userDao" class="com.kkb.project.dao.xml.XMLUserDaoImpl">
+		<property name="template" ref="jdbcTemplate"></property>
+	</bean>
+
+</beans>

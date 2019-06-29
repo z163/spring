@@ -1,0 +1,45 @@
+1、Servlet由谁来创建？
+	* 由Servlet容器来创建
+	* Servlet容器指的就是Tomcat、Weblogic、Jboss
+	
+2、Servlet什么时候创建？
+	* 在web.xml中，每个servletg标签都拥有一个子标签load-on-startup标签
+	
+	* load-on-startup标签内容填写一些数字，作用就是在servlet容器启动的时候，去创建servlet对象
+	数字从0开始，数字越小，加载优先级越高
+	
+	* 默认是第一次请求的时候去创建Servlet实例。
+	
+3、相同Servlet的实例在一个应用中，只有一个
+4、ApplicationContext和BeanFactory的区别？
+	ApplicationContext：应用上下文；在创建ApplicationContext实例的时候，就会创建单例的Bean的实例
+	BeanFactory：bean的工厂；在第一次getBean方法被调用的时候，才进行创建Bean的实例
+	
+5、ApplicationContext接口常用的实现类由哪些？
+	ClassPathXmlApplicationContext
+	FileSystemApplicationContext
+	
+	WebApplicationContext子接口：整合web应用
+	
+	AnnotationConfigApplicationContext : 纯注解方式的java应用上下文
+	AnnotationConfigWebApplicationContext : 纯注解方式的web应用上下文
+
+6、context:component-scan标签
+	
+7、@Autowired注解
+	* @Autowired需要开启
+	* 如何开启@Autowired，两种方式：
+		* context:annotation-drivern
+		* context:component-scan
+
+	* 使用@Autowired注解，不需要对指定的属性编写set方法
+	* 要保证@Autowired注解的属性对应的对象，在spring容器中存在
+	* @Autowired注解的作用：
+		* 从spring容器中根据类型获取指定类型的bean实例。通过该类型有多个bean实例，则报错
+		* 将获取到的bean实例，赋值给指定的属性。
+		
+	@Resource注解和@Autowired注解作用是一样的
+		* @Resource注解是JDK提供的，@Autowired注解是spring提供的
+		* @Resource默认是按照bean的名称获取bean的实例
+	
+	@Autowired和@Qualifier注解合起来使用，就相当于@Resource注解的作用
